@@ -12,19 +12,26 @@ class StateHistory {
 
     fun addEmpty(timestamp: LocalDateTime) = history.put(timestamp, -1.0)
 
+    val stateHistory: Map<LocalDateTime,Double>
+        get() = history.filterValues { it > 0.0 }
+
+    val emptyHistory: Map<LocalDateTime,Double>
+        get() = history.filterValues { it <= 0.0 }
+
     fun getLastEmptyTimestamp(): LocalDateTime? {
-        return history.filterValues { it <= 0.0 }
-            .keys.first()
+        return emptyHistory.keys.firstOrNull()
     }
 
     fun getSpeed(speedCalculationInterval: TemporalAmount): Double? {
-        val after = history.entries.firstOrNull()
+        if(stateHistory.size < 2) return null
+        val after = stateHistory.entries.first()
         val timestamp = LocalDateTime.now().minus(speedCalculationInterval)
-        val before = history.filterKeys { it.isBefore(timestamp) }
-            .entries.firstOrNull() ?: history.entries.lastOrNull()
-        if(after == null || before == null) return null
+        val before = stateHistory.filterKeys { it.isBefore(timestamp) }
+            .entries.firstOrNull() ?: stateHistory.entries.last()
         val volume = after.value - before.value
         val duration = Duration.between(before.key, after.key)
         return volume / duration.seconds
     }
+
+    fun clear() = history.clear()
 }
