@@ -1,6 +1,5 @@
 package com.github.mat127.septik
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,14 +9,16 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.github.mat127.septik.databinding.ActivityMainBinding
+import com.github.mat127.septik.model.Septik
 import com.google.android.material.snackbar.Snackbar
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private val septik = Septik()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,19 +62,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addEmptyDate() {
-        val c = Calendar.getInstance()
-        val mYear = c.get(Calendar.YEAR)
-        val mMonth = c.get(Calendar.MONTH)
-        val mDay = c.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog = DatePickerDialog(this, { view, year, monthOfYear, dayOfMonth ->
-            Snackbar.make(binding.toolbar, dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        },
-            mYear,
-            mMonth,
-            mDay
-        )
-        datePickerDialog.show()
+        val dialog = AddEmptyDialog(septik.history)
+        dialog.show(supportFragmentManager, "add-empty")
     }
 }
