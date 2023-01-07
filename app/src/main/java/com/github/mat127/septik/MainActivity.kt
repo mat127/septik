@@ -9,7 +9,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.github.mat127.septik.databinding.ActivityMainBinding
-import com.github.mat127.septik.model.Septik
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -17,8 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-
-    private val septik = Septik()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,12 +63,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addState() {
-        val dialog = AddStateDialog(septik.stateHistory)
+        val dialog = AddStateDialog()
         dialog.show(supportFragmentManager, "add-state")
     }
 
     private fun addEmptyDate() {
-        val dialog = AddEmptyDialog(septik.emptyHistory)
+        val dialog = AddEmptyDialog()
         dialog.show(supportFragmentManager, "add-empty")
     }
 }
