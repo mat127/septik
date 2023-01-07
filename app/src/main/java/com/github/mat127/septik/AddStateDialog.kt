@@ -8,21 +8,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import com.github.mat127.septik.databinding.FragmentAddStateBinding
-import com.github.mat127.septik.model.StateHistory
+import com.github.mat127.septik.model.SeptikViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-class AddStateDialog(private val history:StateHistory) : DialogFragment() {
+class AddStateDialog : DialogFragment() {
 
     private var _binding: FragmentAddStateBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val model: SeptikViewModel by activityViewModels()
+    private val history get() = model.septik.stateHistory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
