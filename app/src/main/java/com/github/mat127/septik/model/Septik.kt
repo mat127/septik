@@ -9,14 +9,15 @@ private val SPEED_CALCULATION_INTERVAL = Duration.ofDays(30)
 
 class Septik {
 
-    val history = StateHistory()
+    val stateHistory = StateHistory()
+    val emptyHistory = EmptyHistory()
 
     val volume = 11.0
 
     fun getFullDate(): LocalDateTime? {
-        val start = history.getLastEmptyTimestamp()
+        val start = emptyHistory.getLastEmptyTimestamp()
         if (start == null) return null
-        val speed = history.getSpeed(SPEED_CALCULATION_INTERVAL)
+        val speed = stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL)
         if (speed == null) return null
         return start.plus(volume.div(speed).roundToLong(), ChronoUnit.SECONDS)
     }

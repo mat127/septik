@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.github.mat127.septik.databinding.FragmentAddEmptyBinding
-import com.github.mat127.septik.model.StateHistory
+import com.github.mat127.septik.model.EmptyHistory
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-class AddEmptyDialog(private val history: StateHistory) : DialogFragment() {
+class AddEmptyDialog(private val history: EmptyHistory) : DialogFragment() {
 
     private var _binding: FragmentAddEmptyBinding? = null
 
@@ -28,7 +28,7 @@ class AddEmptyDialog(private val history: StateHistory) : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAddEmptyBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,7 +46,7 @@ class AddEmptyDialog(private val history: StateHistory) : DialogFragment() {
             dismiss()
         }
         binding.buttonOk.setOnClickListener {
-            history.addEmpty(timestamp)
+            history.add(timestamp)
             dismiss()
         }
     }

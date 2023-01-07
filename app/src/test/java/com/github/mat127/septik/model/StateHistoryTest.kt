@@ -5,7 +5,6 @@ import org.junit.Before
 import org.junit.Test
 import java.time.Duration
 import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 
 class StateHistoryTest {
 
@@ -17,56 +16,7 @@ class StateHistoryTest {
     }
 
     @Test
-    fun whenEmpty() {
-        assertThat(history.getLastEmptyTimestamp())
-            .isNull()
-    }
-
-    @Test
-    fun whenNotEmptyButWih() {
-        history.add(LocalDateTime.now(), 2.34)
-        assertThat(history.getLastEmptyTimestamp())
-            .isNull()
-    }
-
-    @Test
-    fun whenOnlyEmptyRecordExists_thenReturned() {
-        val ts = LocalDateTime.now()
-        history.addEmpty(ts)
-        assertThat(history.getLastEmptyTimestamp())
-            .isEqualTo(ts)
-    }
-
-    @Test
-    fun whenEmptyRecordExists_thenReturned() {
-        val ts = LocalDateTime.now().minus(1, ChronoUnit.DAYS)
-        history.add(ts.minus(1, ChronoUnit.HOURS), 2.34)
-        history.add(ts.plus(1, ChronoUnit.HOURS), 2.34)
-        history.addEmpty(ts)
-        assertThat(history.getLastEmptyTimestamp())
-            .isEqualTo(ts)
-    }
-
-    @Test
-    fun whenMoreEmptyRecordsExist_thenLastIsReturned() {
-        val ts = LocalDateTime.now().minus(1, ChronoUnit.DAYS)
-        history.add(ts.plus(1, ChronoUnit.HOURS), 2.34)
-        history.add(ts.plus(2, ChronoUnit.HOURS), 2.34)
-        history.addEmpty(ts)
-        history.addEmpty(ts.minus(1, ChronoUnit.HOURS))
-        assertThat(history.getLastEmptyTimestamp())
-            .isEqualTo(ts)
-    }
-
-    @Test
     fun whenEmpty_thenNoSpeed() {
-        assertThat(history.getSpeed(Duration.ofDays(5)))
-            .isNull()
-    }
-
-    @Test
-    fun whenOnlyEmpty_thenNoSpeed() {
-        history.addEmpty(LocalDateTime.now())
         assertThat(history.getSpeed(Duration.ofDays(5)))
             .isNull()
     }
@@ -86,7 +36,6 @@ class StateHistoryTest {
             Pair(now.minusDays(1), 2.34)
         )
         states.forEach { history.add(it.first, it.second) }
-        history.addEmpty(now.minusDays(3))
         assertThat(history.getSpeed(Duration.ofDays(5)))
             .isEqualTo((states[1].second - states[0].second)/Duration.between(states[0].first,states[1].first).seconds)
     }
@@ -101,7 +50,6 @@ class StateHistoryTest {
             Pair(now.minusDays(1), 2.34)
         )
         states.forEach { history.add(it.first, it.second) }
-        history.addEmpty(now.minusDays(5))
         assertThat(history.getSpeed(Duration.ofDays(5)))
             .isEqualTo((states[2].second - states[0].second)/Duration.between(states[0].first,states[2].first).seconds)
     }
