@@ -52,6 +52,10 @@ class MainActivity : AppCompatActivity() {
             addEmptyDate()
             true
         }
+        R.id.action_addState -> {
+            addState()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -59,6 +63,11 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    private fun addState() {
+        val dialog = AddStateDialog(septik.stateHistory)
+        dialog.show(supportFragmentManager, "add-state")
     }
 
     private fun addEmptyDate() {
