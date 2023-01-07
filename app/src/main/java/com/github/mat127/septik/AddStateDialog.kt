@@ -6,61 +6,61 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.github.mat127.septik.databinding.FragmentAddEmptyBinding
-import com.github.mat127.septik.model.EmptyHistory
+import com.github.mat127.septik.databinding.FragmentAddStateBinding
+import com.github.mat127.septik.model.StateHistory
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
+class AddStateDialog(private val history:StateHistory) : DialogFragment() {
 
-class AddEmptyDialog(private val history: EmptyHistory) : DialogFragment() {
-
-    private var _binding: FragmentAddEmptyBinding? = null
+    private var _binding: FragmentAddStateBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddEmptyBinding.inflate(inflater, container, false)
+        // Inflate the layout for this fragment
+        _binding = FragmentAddStateBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         update()
-        binding.chipDate.setOnClickListener {
+        binding.chipStateDate.setOnClickListener {
             showDatePicker()
         }
-        binding.chipTime.setOnClickListener {
+        binding.chipStateTime.setOnClickListener {
             showTimePicker()
         }
-        binding.buttonCancel.setOnClickListener {
+        binding.buttonCancel2.setOnClickListener {
             dismiss()
         }
-        binding.buttonOk.setOnClickListener {
-            history.add(timestamp)
-            dismiss()
+        binding.buttonOk2.setOnClickListener {
+            if(saveState())
+                dismiss()
         }
     }
 
     private var date = LocalDate.now()
     private var time = LocalTime.now()
 
-    private val timestamp:LocalDateTime
+    private val timestamp: LocalDateTime
         get() = LocalDateTime.of(date, time)
 
     private fun update() {
-        binding.chipDate.text = DateTimeFormatter.ISO_LOCAL_DATE.format(date)
+        binding.chipStateDate.text = DateTimeFormatter.ISO_LOCAL_DATE.format(date)
         val formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
-        binding.chipTime.text = formatter.format(time)
+        binding.chipStateTime.text = formatter.format(time)
     }
 
     private fun showDatePicker() {
@@ -83,6 +83,19 @@ class AddEmptyDialog(private val history: EmptyHistory) : DialogFragment() {
             time.hour, time.minute, true
         )
         dialog.show()
+    }
+
+    private fun saveState(): Boolean {
+        val state = binding.editTextState.text.toString().toDoubleOrNull()
+        return if(state == null) {
+            Toast.makeText(requireContext(), "State is empty or invalid", Toast.LENGTH_SHORT)
+                .show()
+            false
+        }
+        else {
+            history.add(timestamp, state)
+            true
+        }
     }
 
     override fun onDestroyView() {
