@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addEmptyDate() {
-        val dialog = AddEmptyDialog(septik.history)
+        val dialog = AddEmptyDialog(septik.emptyHistory)
         dialog.show(supportFragmentManager, "add-empty")
     }
 }
