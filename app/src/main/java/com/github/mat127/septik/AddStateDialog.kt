@@ -62,9 +62,10 @@ class AddStateDialog : DialogFragment() {
         get() = LocalDateTime.of(date, time)
 
     private fun update() {
-        binding.chipStateDate.text = DateTimeFormatter.ISO_LOCAL_DATE.format(date)
-        val formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
-        binding.chipStateTime.text = formatter.format(time)
+        binding.chipStateDate.text = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+            .format(date)
+        binding.chipStateTime.text = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+            .format(time)
     }
 
     private fun showDatePicker() {

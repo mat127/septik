@@ -62,9 +62,10 @@ class AddEmptyDialog : DialogFragment() {
         get() = LocalDateTime.of(date, time)
 
     private fun update() {
-        binding.chipDate.text = DateTimeFormatter.ISO_LOCAL_DATE.format(date)
-        val formatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
-        binding.chipTime.text = formatter.format(time)
+        binding.chipDate.text = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+            .format(date)
+        binding.chipTime.text = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+            .format(time)
     }
 
     private fun showDatePicker() {
