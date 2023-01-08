@@ -35,7 +35,7 @@ class Septik : StateHistory.Observer, EmptyHistory.Observer {
         if(state.isNaN()) -1
         else state.div(volume).times(100).roundToInt()
 
-    fun getFullDate(): LocalDateTime? {
+    val nextFullDate: LocalDateTime? get() {
         val start = emptyHistory.getLastEmptyTimestamp()
         if (start == null) return null
         val speed = stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL)

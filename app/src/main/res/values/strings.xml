@@ -6,4 +6,8 @@
     <string name="action_addState">Stav</string>
     <string name="next_full_date">příští vývoz</string>
     <string name="in_days">za</string>
+    <string name="not_available">N/A</string>
+    <string name="state_format">%.4fm³</string>
+    <string name="state_percent_format">%d%%</string>
+    <string name="days_to_full_format">%d dní</string>
 </resources>
