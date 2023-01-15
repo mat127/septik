@@ -1,13 +1,13 @@
 package com.github.mat127.septik.model
 
-import java.time.LocalDateTime
+import java.time.Instant
 import java.util.Comparator
 
 class EmptyHistory {
 
-    val history = mutableListOf<LocalDateTime>()
+    val history = mutableListOf<Instant>()
 
-    fun add(timestamp: LocalDateTime) {
+    fun add(timestamp: Instant) {
         var index = history.binarySearch(timestamp, Comparator.naturalOrder())
         if (index < 0) index = -index - 1
         history.add(index, timestamp)

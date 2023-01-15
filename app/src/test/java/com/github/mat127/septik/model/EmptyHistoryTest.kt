@@ -3,7 +3,7 @@ package com.github.mat127.septik.model
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
-import java.time.LocalDateTime
+import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 class EmptyHistoryTest {
@@ -23,7 +23,7 @@ class EmptyHistoryTest {
 
     @Test
     fun whenOnlyEmptyRecordExists_thenReturned() {
-        val ts = LocalDateTime.now()
+        val ts = Instant.now()
         history.add(ts)
         assertThat(history.getLastEmptyTimestamp())
             .isEqualTo(ts)
@@ -31,10 +31,10 @@ class EmptyHistoryTest {
 
     @Test
     fun whenMoreEmptyRecordsExist_thenLastIsReturned() {
-        val ts = LocalDateTime.now().minus(1, ChronoUnit.DAYS)
-        history.add(ts.minusHours(2))
+        val ts = Instant.now().minus(1, ChronoUnit.DAYS)
+        history.add(ts.minus(2, ChronoUnit.HOURS))
         history.add(ts)
-        history.add(ts.minusHours(1))
+        history.add(ts.minus(1, ChronoUnit.HOURS))
         assertThat(history.getLastEmptyTimestamp())
             .isEqualTo(ts)
     }

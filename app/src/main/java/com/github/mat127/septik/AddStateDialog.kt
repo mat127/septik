@@ -11,9 +11,11 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.github.mat127.septik.databinding.FragmentAddStateBinding
 import com.github.mat127.septik.model.SeptikViewModel
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -58,8 +60,10 @@ class AddStateDialog : DialogFragment() {
     private var date = LocalDate.now()
     private var time = LocalTime.now()
 
-    private val timestamp: LocalDateTime
+    private val timestamp: Instant
         get() = LocalDateTime.of(date, time)
+            .atZone(ZoneId.systemDefault())
+            .toInstant()
 
     private fun update() {
         binding.chipStateDate.text = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
