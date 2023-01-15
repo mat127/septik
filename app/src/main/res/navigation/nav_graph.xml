@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/CurrentStateFragment"
-            android:name="com.github.mat127.septik.CurrentStateFragment"
+            android:name="com.github.mat127.septik.ui.CurrentStateFragment"
             android:label="@string/current_state_fragment_label"
             tools:layout="@layout/fragment_current_state"/>
 </navigation>

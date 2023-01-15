@@ -1,4 +1,4 @@
-package com.github.mat127.septik
+package com.github.mat127.septik.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.github.mat127.septik.databinding.FragmentAddEmptyBinding
-import com.github.mat127.septik.model.SeptikViewModel
+import com.github.mat127.septik.viewmodel.SeptikViewModel
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-class AddEmptyDialog : DialogFragment() {
+class AddEmptyDialog: DialogFragment() {
 
     private var _binding: FragmentAddEmptyBinding? = null
 
@@ -27,8 +27,7 @@ class AddEmptyDialog : DialogFragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val model: SeptikViewModel by activityViewModels()
-    private val history get() = model.septik.emptyHistory
+    private val septikViewModel: SeptikViewModel by activityViewModels { SeptikViewModel.Factory }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +51,7 @@ class AddEmptyDialog : DialogFragment() {
             dismiss()
         }
         binding.buttonOk.setOnClickListener {
-            history.add(timestamp)
+            septikViewModel.addEmptyTimestamp(timestamp)
             dismiss()
         }
     }
@@ -60,7 +59,7 @@ class AddEmptyDialog : DialogFragment() {
     private var date = LocalDate.now()
     private var time = LocalTime.now()
 
-    private val timestamp:Instant
+    private val timestamp: Instant
         get() = LocalDateTime.of(date, time)
             .atZone(ZoneId.systemDefault())
             .toInstant()

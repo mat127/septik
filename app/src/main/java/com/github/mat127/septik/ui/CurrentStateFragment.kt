@@ -1,4 +1,4 @@
-package com.github.mat127.septik
+package com.github.mat127.septik.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.github.mat127.septik.R
 import com.github.mat127.septik.databinding.FragmentCurrentStateBinding
-import com.github.mat127.septik.model.SeptikViewModel
+import com.github.mat127.septik.viewmodel.SeptikViewModel
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
@@ -23,7 +24,7 @@ class CurrentStateFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val model: SeptikViewModel by activityViewModels()
+    private val model: SeptikViewModel by activityViewModels { SeptikViewModel.Factory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -1,4 +1,4 @@
-package com.github.mat127.septik
+package com.github.mat127.septik.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.github.mat127.septik.R
 import com.github.mat127.septik.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     // as you specify a parent activity in AndroidManifest.xml.
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_addEmptyDate -> {
-            addEmptyDate()
+            addEmptyTimestamp()
             true
         }
         R.id.action_addState -> {
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show(supportFragmentManager, "add-state")
     }
 
-    private fun addEmptyDate() {
+    private fun addEmptyTimestamp() {
         val dialog = AddEmptyDialog()
         dialog.show(supportFragmentManager, "add-empty")
     }

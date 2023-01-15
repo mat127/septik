@@ -1,24 +1,22 @@
 package com.github.mat127.septik.model
 
+import androidx.annotation.WorkerThread
+import com.github.mat127.septik.db.dao.EmptyTimestampsDao
+import com.github.mat127.septik.db.entity.EmptyTimestampEntity
 import java.time.Instant
-import java.util.Comparator
 
-class EmptyHistory {
+class EmptyHistory(
+    private val dao: EmptyTimestampsDao
+) {
 
-    val history = mutableListOf<Instant>()
-
-    fun add(timestamp: Instant) {
-        var index = history.binarySearch(timestamp, Comparator.naturalOrder())
-        if (index < 0) index = -index - 1
-        history.add(index, timestamp)
+    @WorkerThread
+    suspend fun add(timestamp: Instant) {
+        dao.insert(EmptyTimestampEntity(timestamp))
         changed()
     }
 
-    fun getLastEmptyTimestamp() = history.lastOrNull()
-
-    fun clear() {
-        history.clear()
-        changed()
+    suspend fun getLastEmptyTimestamp(): Instant? {
+        return dao.getLast()?.timestamp
     }
 
     interface Observer {
