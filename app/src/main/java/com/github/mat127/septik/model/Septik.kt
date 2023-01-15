@@ -6,23 +6,21 @@ import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-private val SPEED_CALCULATION_INTERVAL = Duration.ofDays(30)
+private val SPEED_CALCULATION_INTERVAL = Duration.ofDays(30) // TODO allow user setup in preferences
 
-class Septik : StateHistory.Observer, EmptyHistory.Observer {
+class Septik(
+    val stateHistory: StateHistory,
+    val emptyHistory: EmptyHistory
+) : StateHistory.Observer, EmptyHistory.Observer {
 
-    val stateHistory = StateHistory()
     init {
         stateHistory.addObserver(this)
-    }
-
-    val emptyHistory = EmptyHistory()
-    init {
         emptyHistory.addObserver(this)
     }
 
-    val volume = 11.0
+    val volume = 11.0 // TODO allow user setup in preferences
 
-    val stateNow: Double get() {
+    suspend fun estimateCurrentState(): Double {
         val start = emptyHistory.getLastEmptyTimestamp()
         if (start == null) return Double.NaN
         val speed = stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL)
@@ -35,11 +33,11 @@ class Septik : StateHistory.Observer, EmptyHistory.Observer {
         if(state.isNaN()) -1
         else state.div(volume).times(100).roundToInt()
 
-    val nextFullDate: Instant? get() {
+    suspend fun estimateNextFullTimestamp(): Instant? {
         val start = emptyHistory.getLastEmptyTimestamp()
         if (start == null) return null
         val speed = stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL)
-        if (speed == null) return null
+        if (speed == null || speed <= 0.0) return null
         return start.plus(volume.div(speed).roundToLong(), ChronoUnit.SECONDS)
     }
 

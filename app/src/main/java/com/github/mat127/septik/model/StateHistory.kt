@@ -1,32 +1,36 @@
 package com.github.mat127.septik.model
 
+import androidx.annotation.WorkerThread
+import com.github.mat127.septik.db.dao.StateDao
+import com.github.mat127.septik.db.entity.StateEntity
 import java.time.Duration
 import java.time.Instant
 import java.time.temporal.TemporalAmount
 
-class StateHistory {
+class StateHistory(
+    private val dao: StateDao
+) {
 
-    val history = sortedMapOf<Instant,Double>(Comparator.naturalOrder())
-
-    fun add(timestamp: Instant, state: Double) {
-        history.put(timestamp, state)
+    @WorkerThread
+    suspend fun add(timestamp: Instant, state: Double) {
+        dao.insert(StateEntity(timestamp, state))
         changed()
     }
 
-    fun getSpeed(speedCalculationInterval: TemporalAmount): Double? {
-        if(history.size < 2) return null
-        val after = history.entries.last()
-        val timestamp = Instant.now().minus(speedCalculationInterval)
-        val before = history.filterKeys { it.isBefore(timestamp) && it.isBefore(after.key) }
-            .entries.lastOrNull() ?: history.entries.first()
-        val volume = after.value - before.value
-        val duration = Duration.between(before.key, after.key)
+    suspend fun getLast() = dao.getLast()
+
+    suspend fun getLastBefore(timestamp: Instant) = dao.getLastBefore(timestamp)
+
+    suspend fun getSpeed(speedCalculationInterval: TemporalAmount): Double? {
+        val last = getLast() ?: return null
+        var timestamp = Instant.now().minus(speedCalculationInterval)
+        if (timestamp.isAfter(last.timestamp)) {
+            timestamp = last.timestamp
+        }
+        var before = getLastBefore(timestamp) ?: return null
+        val duration = Duration.between(before.timestamp, last.timestamp)
+        val volume = last.state - before.state
         return volume / duration.seconds
-    }
-
-    fun clear() {
-        history.clear()
-        changed()
     }
 
     interface Observer {

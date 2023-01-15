@@ -1,4 +1,4 @@
-package com.github.mat127.septik
+package com.github.mat127.septik.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -10,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.github.mat127.septik.databinding.FragmentAddStateBinding
-import com.github.mat127.septik.model.SeptikViewModel
+import com.github.mat127.septik.viewmodel.SeptikViewModel
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -19,7 +19,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-class AddStateDialog : DialogFragment() {
+class AddStateDialog: DialogFragment() {
 
     private var _binding: FragmentAddStateBinding? = null
 
@@ -27,8 +27,7 @@ class AddStateDialog : DialogFragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val model: SeptikViewModel by activityViewModels()
-    private val history get() = model.septik.stateHistory
+    private val septikViewModel: SeptikViewModel by activityViewModels { SeptikViewModel.Factory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -102,7 +101,7 @@ class AddStateDialog : DialogFragment() {
             false
         }
         else {
-            history.add(timestamp, state)
+            septikViewModel.addState(timestamp, state)
             true
         }
     }
