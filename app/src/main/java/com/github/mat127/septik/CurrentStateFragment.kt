@@ -9,7 +9,9 @@ import androidx.fragment.app.activityViewModels
 import com.github.mat127.septik.databinding.FragmentCurrentStateBinding
 import com.github.mat127.septik.model.SeptikViewModel
 import java.time.Duration
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -26,7 +28,7 @@ class CurrentStateFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCurrentStateBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,7 +37,7 @@ class CurrentStateFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         model.currentState.observe(viewLifecycleOwner, this::updateEstimatedState)
         model.currentPercent.observe(viewLifecycleOwner, this::updateEstimatedStatePercent)
-        model.nextFullDate.observe(viewLifecycleOwner, this::updateNextFullDate)
+        model.nextFullDate.observe(viewLifecycleOwner, this::updateNextFullTimestamp)
     }
 
     private fun updateEstimatedState(state: Double) {
@@ -51,15 +53,16 @@ class CurrentStateFragment : Fragment() {
         binding.progressBarFullness.progress = percent
     }
 
-    private fun updateNextFullDate(timestamp: LocalDateTime?) {
+    private fun updateNextFullTimestamp(timestamp: Instant?) {
         if (timestamp == null) {
             binding.textViewFullDate.text = getString(R.string.not_available)
             binding.textViewFullDays.text = getString(R.string.not_available)
         }
         else {
+            val local = LocalDateTime.ofInstant(timestamp, ZoneId.systemDefault())
             binding.textViewFullDate.text = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
-                .format(timestamp)
-            val duration = Duration.between(LocalDateTime.now(), timestamp)
+                .format(local)
+            val duration = Duration.between(Instant.now(), timestamp)
             binding.textViewFullDays.text =
                 String.format(getString(R.string.days_to_full_format), duration.toDays())
         }

@@ -4,7 +4,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import java.time.Duration
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 class StateHistoryTest {
 
@@ -23,17 +24,17 @@ class StateHistoryTest {
 
     @Test
     fun whenOnly1State_thenNoSpeed() {
-        history.add(LocalDateTime.now(), 2.34)
+        history.add(Instant.now(), 2.34)
         assertThat(history.getSpeed(Duration.ofDays(5)))
             .isNull()
     }
 
     @Test
     fun when2States_thenSpeedIsReturned() {
-        val now = LocalDateTime.now()
+        val now = Instant.now()
         val states = arrayOf(
-            Pair(now.minusDays(5), 1.23),
-            Pair(now.minusDays(1), 2.34)
+            Pair(now.minus(5, ChronoUnit.DAYS), 1.23),
+            Pair(now.minus(1, ChronoUnit.DAYS), 2.34)
         )
         states.forEach { history.add(it.first, it.second) }
         assertThat(history.getSpeed(Duration.ofDays(5)))
@@ -43,11 +44,11 @@ class StateHistoryTest {
 
     @Test
     fun whenMoreThan2States_thenCalculationIntervalIsUsed() {
-        val now = LocalDateTime.now()
+        val now = Instant.now()
         val states = arrayOf(
-            Pair(now.minusDays(7), 0.12),
-            Pair(now.minusDays(3), 1.23),
-            Pair(now.minusDays(1), 2.34)
+            Pair(now.minus(7, ChronoUnit.DAYS), 0.12),
+            Pair(now.minus(3, ChronoUnit.DAYS), 1.23),
+            Pair(now.minus(1, ChronoUnit.DAYS), 2.34)
         )
         states.forEach { history.add(it.first, it.second) }
         assertThat(history.getSpeed(Duration.ofDays(5)))

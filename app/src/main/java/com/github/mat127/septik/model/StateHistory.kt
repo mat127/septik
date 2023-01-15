@@ -1,14 +1,14 @@
 package com.github.mat127.septik.model
 
 import java.time.Duration
-import java.time.LocalDateTime
+import java.time.Instant
 import java.time.temporal.TemporalAmount
 
 class StateHistory {
 
-    val history = sortedMapOf<LocalDateTime,Double>(Comparator.naturalOrder())
+    val history = sortedMapOf<Instant,Double>(Comparator.naturalOrder())
 
-    fun add(timestamp: LocalDateTime, state: Double) {
+    fun add(timestamp: Instant, state: Double) {
         history.put(timestamp, state)
         changed()
     }
@@ -16,7 +16,7 @@ class StateHistory {
     fun getSpeed(speedCalculationInterval: TemporalAmount): Double? {
         if(history.size < 2) return null
         val after = history.entries.last()
-        val timestamp = LocalDateTime.now().minus(speedCalculationInterval)
+        val timestamp = Instant.now().minus(speedCalculationInterval)
         val before = history.filterKeys { it.isBefore(timestamp) && it.isBefore(after.key) }
             .entries.lastOrNull() ?: history.entries.first()
         val volume = after.value - before.value

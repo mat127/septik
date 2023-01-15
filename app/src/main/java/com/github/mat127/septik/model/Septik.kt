@@ -1,7 +1,7 @@
 package com.github.mat127.septik.model
 
 import java.time.Duration
-import java.time.LocalDateTime
+import java.time.Instant
 import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -27,7 +27,7 @@ class Septik : StateHistory.Observer, EmptyHistory.Observer {
         if (start == null) return Double.NaN
         val speed = stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL)
         if (speed == null) return Double.NaN
-        val duration = Duration.between(start, LocalDateTime.now())
+        val duration = Duration.between(start, Instant.now())
         return speed * duration.seconds
     }
 
@@ -35,7 +35,7 @@ class Septik : StateHistory.Observer, EmptyHistory.Observer {
         if(state.isNaN()) -1
         else state.div(volume).times(100).roundToInt()
 
-    val nextFullDate: LocalDateTime? get() {
+    val nextFullDate: Instant? get() {
         val start = emptyHistory.getLastEmptyTimestamp()
         if (start == null) return null
         val speed = stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL)
