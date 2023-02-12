@@ -36,15 +36,13 @@ class CurrentStateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        model.currentState.observe(viewLifecycleOwner, this::updateEstimatedState)
         model.currentPercent.observe(viewLifecycleOwner, this::updateEstimatedStatePercent)
         model.nextFullDate.observe(viewLifecycleOwner, this::updateNextFullTimestamp)
     }
 
-    private fun updateEstimatedState(state: Double) {
-        binding.textViewFullness.text =
-            if(state.isNaN()) getString(R.string.not_available)
-            else String.format(getString(R.string.state_format), state)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun updateEstimatedStatePercent(percent: Int) {
@@ -65,12 +63,7 @@ class CurrentStateFragment : Fragment() {
                 .format(local)
             val duration = Duration.between(Instant.now(), timestamp)
             binding.textViewFullDays.text =
-                String.format(getString(R.string.days_to_full_format), duration.toDays())
+                String.format(getString(R.string.capacity_format), duration.toDays())
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

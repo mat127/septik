@@ -20,6 +20,13 @@ class Septik(
 
     val volume = 11.0 // TODO allow user setup in preferences
 
+    suspend fun getFillingSpeed() =
+        stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL) ?: Double.NaN
+
+    fun getCapacity(speed: Double): Duration? =
+        if(speed.isNaN()) null
+        else Duration.ofSeconds(volume.div(speed).roundToLong())
+
     suspend fun estimateCurrentState(): Double {
         val start = emptyHistory.getLastEmptyTimestamp()
         if (start == null) return Double.NaN

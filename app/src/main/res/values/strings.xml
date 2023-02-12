@@ -4,11 +4,14 @@
     <string name="current_state_fragment_label">Septik</string>
     <string name="action_addEmptyDate">Vývoz</string>
     <string name="action_addState">Stav</string>
-    <string name="next_full_date">příští vývoz</string>
-    <string name="in_days">za</string>
+    <string name="last_empty_date">Poslední vývoz</string>
+    <string name="filling_speed">Rychlost plnění</string>
+    <string name="capacity">Kapacita</string>
+    <string name="fullness_estimate">Odhad naplnění</string>
     <string name="not_available">N/A</string>
-    <string name="state_format">%.4fm³</string>
+    <string name="state_format">%.04fm³</string>
     <string name="state_percent_format">%d%%</string>
-    <string name="days_to_full_format">%d dní</string>
+    <string name="capacity_format">%d dní</string>
+    <string name="filling_speed_format">%.04fm³/den</string>
     <string name="state">State:</string>
 </resources>

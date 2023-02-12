@@ -5,11 +5,30 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.github.mat127.septik.SeptikApplication
 import com.github.mat127.septik.model.Septik
 import kotlinx.coroutines.launch
+import java.time.Duration
 import java.time.Instant
 
 class SeptikViewModel(
     private val septik: Septik
 ) : ViewModel(), Septik.Observer {
+
+    private val mutableLastEmptyTimestamp = MutableLiveData<Instant>(null)
+    val lastEmptyTimestamp:LiveData<Instant> = mutableLastEmptyTimestamp
+
+    private val mutableFillingSpeed = MutableLiveData<Double>(Double.NaN)
+    val fillingSpeed:LiveData<Double> = mutableFillingSpeed
+
+    private val mutableCapacity = MutableLiveData<Duration>(null)
+    val capacity:LiveData<Duration> = mutableCapacity
+
+    private val mutableCurrentState = MutableLiveData<Double>(Double.NaN)
+    val currentState:LiveData<Double> = mutableCurrentState
+
+    private val mutableCurrentPercent = MutableLiveData<Int>(-1)
+    val currentPercent:LiveData<Int> = mutableCurrentPercent
+
+    private val mutableNextFullTimestamp = MutableLiveData<Instant>(null)
+    val nextFullDate:LiveData<Instant> = mutableNextFullTimestamp
 
     init {
         septik.addObserver(this)
@@ -41,17 +60,12 @@ class SeptikViewModel(
         septik.stateHistory.add(timestamp, state)
     }
 
-    private val mutableCurrentState = MutableLiveData<Double>(Double.NaN)
-    val currentState:LiveData<Double> = mutableCurrentState
-
-    private val mutableCurrentPercent = MutableLiveData<Int>(-1)
-    val currentPercent:LiveData<Int> = mutableCurrentPercent
-
-    private val mutableNextFullTimestamp = MutableLiveData<Instant>(null)
-    val nextFullDate:LiveData<Instant> = mutableNextFullTimestamp
-
     override fun changed(septik: Septik) {
         viewModelScope.launch {
+            mutableLastEmptyTimestamp.value = septik.emptyHistory.getLastEmptyTimestamp()
+            val speed = septik.getFillingSpeed()
+            mutableFillingSpeed.value = speed
+            mutableCapacity.value = septik.getCapacity(speed)
             val state = septik.estimateCurrentState()
             mutableCurrentState.value = state
             mutableCurrentPercent.value = septik.percent(state)
