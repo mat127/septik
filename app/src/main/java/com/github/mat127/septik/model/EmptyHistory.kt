@@ -3,7 +3,9 @@ package com.github.mat127.septik.model
 import androidx.annotation.WorkerThread
 import com.github.mat127.septik.db.dao.EmptyTimestampsDao
 import com.github.mat127.septik.db.entity.EmptyTimestampEntity
+import java.time.Duration
 import java.time.Instant
+import java.time.temporal.TemporalAmount
 
 class EmptyHistory(
     private val dao: EmptyTimestampsDao
@@ -17,6 +19,13 @@ class EmptyHistory(
 
     suspend fun getLastEmptyTimestamp(): Instant? {
         return dao.getLast()?.timestamp
+    }
+
+    suspend fun getEmptingCountPerYear(calculationInterval: TemporalAmount): Double? {
+        val timestamp = Instant.now().minus(calculationInterval)
+        val stats = dao.getStatsSince(timestamp)
+        val emptingDuration = stats.getEmptingDuration() ?: return null
+        return Duration.ofDays(365).toSeconds().toDouble() / emptingDuration.toSeconds()
     }
 
     interface Observer {

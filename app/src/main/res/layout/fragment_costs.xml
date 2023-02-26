@@ -8,16 +8,75 @@
     tools:context=".ui.costs.CostsFragment" >
 
     <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+            android:text="@string/title_empting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"/>
+    <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tableLayout" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:background="@drawable/round_rect_shape"
+            android:layout_marginEnd="8dp" android:layout_marginStart="8dp"
+            android:padding="8dp" app:layout_constraintTop_toBottomOf="@+id/textView" android:layout_marginTop="8dp">
+
+        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView
+                    android:text="@string/label_empty_per_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textAlignment="textEnd"
+                    android:paddingHorizontal="4dp" android:paddingVertical="4dp"/>
+            <TextView
+                    android:text="12"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/textView_emptingCountPerYear"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:gravity="center_vertical|end" android:layout_weight="1"/>
+        </TableRow>
+        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView
+                    android:text="@string/label_empting_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textAlignment="textEnd"
+                    android:paddingHorizontal="4dp" android:paddingVertical="4dp"/>
+            <TextView
+                    android:text="2312 Kč"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/textView_emptingPrice"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:gravity="center_vertical|end" android:layout_weight="1"/>
+        </TableRow>
+        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView
+                    android:text="@string/label_empting_price_per_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textAlignment="textEnd"
+                    android:paddingHorizontal="4dp" android:paddingVertical="4dp"/>
+            <TextView
+                    android:text="28231 Kč"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/textView_emptingPricePerYear"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_weight="1" android:gravity="center_vertical|end"/>
+        </TableRow>
+        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView
+                    android:text="@string/label_empting_price_per_month"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textAlignment="textEnd"
+                    android:paddingHorizontal="4dp" android:paddingVertical="4dp"/>
+            <TextView
+                    android:text="523 Kč"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/textView_emptingPricePerMonth"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_weight="1" android:gravity="center_vertical|end"/>
+        </TableRow>
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

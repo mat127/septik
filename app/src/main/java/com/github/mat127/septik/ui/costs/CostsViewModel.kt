@@ -1,13 +1,47 @@
 package com.github.mat127.septik.ui.costs
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import androidx.lifecycle.viewmodel.CreationExtras
+import com.github.mat127.septik.SeptikApplication
+import com.github.mat127.septik.model.Septik
+import kotlinx.coroutines.launch
 
-class CostsViewModel : ViewModel() {
+class CostsViewModel(
+    septik: Septik
+) : ViewModel(), Septik.Observer {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is costs Fragment"
+    private val _emptingCountPerYear = MutableLiveData<Double>(Double.NaN)
+    val emptingCountPerYear: LiveData<Double> = _emptingCountPerYear
+
+    private val _emptingPrice = MutableLiveData<Double>(Double.NaN)
+    val emptingPrice: LiveData<Double> = _emptingPrice
+
+    init {
+        septik.addObserver(this)
+        changed(septik)
     }
-    val text: LiveData<String> = _text
+
+    // Define ViewModel factory in a companion object
+    companion object {
+
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(
+                modelClass: Class<T>,
+                extras: CreationExtras
+            ): T {
+                val application = checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
+                return CostsViewModel(
+                    (application as SeptikApplication).septik
+                ) as T
+            }
+        }
+    }
+
+    override fun changed(septik: Septik) {
+        viewModelScope.launch {
+            _emptingCountPerYear.value = septik.getEmptingCountPerYear()
+            _emptingPrice.value = septik.emptingPrice
+        }
+    }
 }

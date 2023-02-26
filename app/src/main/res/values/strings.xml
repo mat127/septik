@@ -17,4 +17,11 @@
     <string name="title_state">Stav</string>
     <string name="title_costs">Náklady</string>
     <string name="title_settings">Nastavení</string>
+    <string name="title_empting">Vyvážení</string>
+    <string name="label_empty_per_year">Vývozů ročně:</string>
+    <string name="label_empting_price">Cena za vývoz:</string>
+    <string name="label_empting_price_per_year">Cena ročně:</string>
+    <string name="label_empting_price_per_month">Měsíční záloha:</string>
+    <string name="price_format">%.02f Kč</string>
+
 </resources>
