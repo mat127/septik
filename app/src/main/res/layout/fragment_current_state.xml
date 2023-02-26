@@ -12,7 +12,8 @@
             android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/linearLayout2" android:gravity="center_horizontal"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tableLayout">
         <TextView
                 android:text="56%"
                 android:layout_width="wrap_content"
@@ -41,5 +42,72 @@
             app:layout_constraintStart_toStartOf="parent"
             android:max="100" android:progress="32"
             android:layout_marginStart="32dp" android:layout_marginEnd="32dp"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"/>
+    <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/tableLayout" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:background="@drawable/round_rect_shape"
+            android:layout_marginEnd="8dp" android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+            android:padding="8dp">
+
+        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView
+                    android:text="@string/last_empty_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textAlignment="textEnd"
+                    android:paddingHorizontal="4dp" android:paddingVertical="4dp"/>
+            <TextView
+                    android:text="4.1.2023"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/text_view_last_empty_date"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:gravity="center_vertical|end" android:layout_weight="1"/>
+        </TableRow>
+        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView
+                    android:text="@string/filling_speed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textAlignment="textEnd"
+                    android:paddingHorizontal="4dp" android:paddingVertical="4dp"/>
+            <TextView
+                    android:text="0.321 m³/den"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/textViewFillingSpeed"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:gravity="center_vertical|end" android:layout_weight="1"/>
+        </TableRow>
+        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView
+                    android:text="@string/capacity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textAlignment="textEnd"
+                    android:paddingHorizontal="4dp" android:paddingVertical="4dp"/>
+            <TextView
+                    android:text="28 dní"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/textView_capacity"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_weight="1" android:gravity="center_vertical|end"/>
+        </TableRow>
+        <TableRow android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView
+                    android:text="@string/fullness_estimate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textAlignment="textEnd"
+                    android:paddingHorizontal="4dp" android:paddingVertical="4dp"/>
+            <TextView
+                    android:text="5.23m³"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:id="@+id/textView_fullness"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_weight="1" android:gravity="center_vertical|end"/>
+        </TableRow>
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

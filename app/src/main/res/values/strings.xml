@@ -13,5 +13,8 @@
     <string name="state_percent_format">%d%%</string>
     <string name="capacity_format">%d dní</string>
     <string name="filling_speed_format">%.04fm³/den</string>
-    <string name="state">State:</string>
+    <string name="state">Stav:</string>
+    <string name="title_state">Stav</string>
+    <string name="title_costs">Náklady</string>
+    <string name="title_settings">Nastavení</string>
 </resources>
