@@ -38,6 +38,10 @@ class CurrentStateFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         model.currentPercent.observe(viewLifecycleOwner, this::updateEstimatedStatePercent)
         model.nextFullDate.observe(viewLifecycleOwner, this::updateNextFullTimestamp)
+        model.lastEmptyTimestamp.observe(viewLifecycleOwner, this::updateLastEmptyTimestamp)
+        model.fillingSpeed.observe(viewLifecycleOwner, this::updateFillingSpeed)
+        model.capacity.observe(viewLifecycleOwner, this::updateCapacity)
+        model.currentState.observe(viewLifecycleOwner, this::updateEstimatedState)
     }
 
     override fun onDestroyView() {
@@ -65,5 +69,34 @@ class CurrentStateFragment : Fragment() {
             binding.textViewFullDays.text =
                 String.format(getString(R.string.capacity_format), duration.toDays())
         }
+    }
+
+    private fun updateLastEmptyTimestamp(timestamp: Instant?) {
+        if (timestamp == null) {
+            binding.textViewLastEmptyDate.text = getString(R.string.not_available)
+        }
+        else {
+            val local = LocalDateTime.ofInstant(timestamp, ZoneId.systemDefault())
+            binding.textViewLastEmptyDate.text = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
+                .format(local)
+        }
+    }
+
+    private fun updateFillingSpeed(speed: Double) {
+        binding.textViewFillingSpeed.text =
+            if(speed.isNaN()) getString(R.string.not_available)
+            else String.format(getString(R.string.filling_speed_format), speed * 24*60*60) // sec -> day
+    }
+
+    private fun updateCapacity(capacity: Duration?) {
+        binding.textViewCapacity.text =
+            if(capacity == null) getString(R.string.not_available)
+            else String.format(getString(R.string.capacity_format), capacity.toDays())
+    }
+
+    private fun updateEstimatedState(state: Double) {
+        binding.textViewFullness.text =
+            if(state.isNaN()) getString(R.string.not_available)
+            else String.format(getString(R.string.state_format), state)
     }
 }
