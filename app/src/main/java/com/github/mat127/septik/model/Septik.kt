@@ -7,6 +7,7 @@ import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 private val SPEED_CALCULATION_INTERVAL = Duration.ofDays(30) // TODO allow user setup in preferences
+private val EMPTING_CALCULATION_INTERVAL = Duration.ofDays(365) // TODO allow user setup in preferences
 
 class Septik(
     val stateHistory: StateHistory,
@@ -19,6 +20,8 @@ class Septik(
     }
 
     val volume = 11.0 // TODO allow user setup in preferences
+
+    val emptingPrice = 2475.0 // TODO allow user setup in preferences
 
     suspend fun getFillingSpeed() =
         stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL) ?: Double.NaN
@@ -47,6 +50,9 @@ class Septik(
         if (speed == null || speed <= 0.0) return null
         return start.plus(volume.div(speed).roundToLong(), ChronoUnit.SECONDS)
     }
+
+    suspend fun getEmptingCountPerYear() =
+        emptyHistory.getEmptingCountPerYear(EMPTING_CALCULATION_INTERVAL)
 
     override fun changed(history: EmptyHistory) = changed()
 
