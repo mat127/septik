@@ -13,6 +13,7 @@
     <string name="state_percent_format">%d%%</string>
     <string name="capacity_format">%d dní</string>
     <string name="filling_speed_format">%.04fm³/den</string>
+    <string name="format_water_price">%.02fKč/m³</string>
     <string name="state">Stav:</string>
     <string name="title_state">Stav</string>
     <string name="title_costs">Náklady</string>
@@ -22,6 +23,9 @@
     <string name="label_empting_price">Cena za vývoz:</string>
     <string name="label_empting_price_per_year">Cena ročně:</string>
     <string name="label_empting_price_per_month">Měsíční záloha:</string>
-    <string name="price_format">%.02f Kč</string>
+    <string name="price_format">%.02fKč</string>
+    <string name="title_water_consumption">Spotřeba vody</string>
+    <string name="label_consumption_per_day">Denní spotřeba:</string>
+    <string name="label_water_price">Cena za 1m³:</string>
 
 </resources>

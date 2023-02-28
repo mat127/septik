@@ -15,6 +15,6 @@ interface StateDao {
     @Query("SELECT * FROM state_history ORDER BY timestamp DESC LIMIT 1")
     suspend fun getLast(): StateEntity?
 
-    @Query("SELECT * FROM state_history WHERE timestamp < :timestamp ORDER BY timestamp DESC LIMIT 1")
-    suspend fun getLastBefore(timestamp: Instant): StateEntity?
+    @Query("SELECT * FROM state_history WHERE timestamp > :timestamp ORDER BY timestamp ASC LIMIT 1")
+    suspend fun getFirstAfter(timestamp: Instant): StateEntity?
 }
