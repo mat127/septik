@@ -19,15 +19,18 @@ class StateHistory(
 
     suspend fun getLast() = dao.getLast()
 
-    suspend fun getLastBefore(timestamp: Instant) = dao.getLastBefore(timestamp)
+    suspend fun getFirstAfter(timestamp: Instant) = dao.getFirstAfter(timestamp)
 
     suspend fun getSpeed(speedCalculationInterval: TemporalAmount): Double? {
         val last = getLast() ?: return null
-        var timestamp = Instant.now().minus(speedCalculationInterval)
+        val timestamp = Instant.now().minus(speedCalculationInterval)
         if (timestamp.isAfter(last.timestamp)) {
-            timestamp = last.timestamp
+            return null
         }
-        var before = getLastBefore(timestamp) ?: return null
+        val before = getFirstAfter(timestamp) ?: return null
+        if (!before.timestamp.isBefore(last.timestamp)) {
+            return null
+        }
         val duration = Duration.between(before.timestamp, last.timestamp)
         val volume = last.state - before.state
         return volume / duration.seconds

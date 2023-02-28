@@ -29,6 +29,9 @@ class CostsFragment : Fragment() {
         model.emptingCountPerYear.observe(viewLifecycleOwner) { update() }
         model.emptingPrice.observe(viewLifecycleOwner) { update() }
 
+        model.waterConsumptionPerDay.observe(viewLifecycleOwner) { updateWaterConsumption() }
+        model.waterPrice.observe(viewLifecycleOwner) { updateWaterConsumption() }
+
         return root
     }
 
@@ -61,6 +64,37 @@ class CostsFragment : Fragment() {
         binding.textViewEmptingPricePerMonth.text =
             if(emptingCount == null || emptingPrice == null) getString(R.string.not_available)
             else String.format(getString(R.string.price_format), emptingCount * emptingPrice / 12)
+    }
+
+    private fun updateWaterConsumption() {
+        updateWaterConsumptionPerDay(model.waterConsumptionPerDay.value)
+        updateWaterPrice(model.waterPrice.value)
+        updateWaterPricePerYear(model.waterConsumptionPerDay.value, model.waterPrice.value)
+        updateWaterPricePerMonth(model.waterConsumptionPerDay.value, model.waterPrice.value)
+    }
+
+    private fun updateWaterConsumptionPerDay(consumption: Double?) {
+        binding.textViewWaterConsumptionPerDay.text =
+            if(consumption == null) getString(R.string.not_available)
+            else String.format(getString(R.string.filling_speed_format), consumption)
+    }
+
+    private fun updateWaterPrice(price: Double?) {
+        binding.textViewWaterPrice.text =
+            if(price == null) getString(R.string.not_available)
+            else String.format(getString(R.string.format_water_price), price)
+    }
+
+    private fun updateWaterPricePerYear(consumption: Double?, price: Double?) {
+        binding.textViewWaterPricePerYear.text =
+            if(consumption == null || price == null) getString(R.string.not_available)
+            else String.format(getString(R.string.price_format), consumption * price * 365)
+    }
+
+    private fun updateWaterPricePerMonth(consumption: Double?, price: Double?) {
+        binding.textViewWaterPricePerMonth.text =
+            if(consumption == null || price == null) getString(R.string.not_available)
+            else String.format(getString(R.string.price_format), consumption * price * 365/12)
     }
 
     override fun onDestroyView() {

@@ -16,6 +16,12 @@ class CostsViewModel(
     private val _emptingPrice = MutableLiveData<Double>(Double.NaN)
     val emptingPrice: LiveData<Double> = _emptingPrice
 
+    private val _waterConsumptionPerDay = MutableLiveData<Double>(Double.NaN)
+    val waterConsumptionPerDay: LiveData<Double> = _waterConsumptionPerDay
+
+    private val _waterPrice = MutableLiveData<Double>(Double.NaN)
+    val waterPrice: LiveData<Double> = _waterPrice
+
     init {
         septik.addObserver(this)
         changed(septik)
@@ -42,6 +48,8 @@ class CostsViewModel(
         viewModelScope.launch {
             _emptingCountPerYear.value = septik.getEmptingCountPerYear()
             _emptingPrice.value = septik.emptingPrice
+            _waterConsumptionPerDay.value = septik.getWaterConsumption()
+            _waterPrice.value = septik.waterPrice
         }
     }
 }
