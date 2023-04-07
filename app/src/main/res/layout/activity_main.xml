@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity" android:id="@+id/coordinatorLayout" android:paddingTop="?attr/actionBarSize">
+        tools:context=".ui.MainActivity" android:id="@+id/coordinatorLayout">
 
     <androidx.fragment.app.FragmentContainerView
             android:name="androidx.navigation.fragment.NavHostFragment"
