@@ -10,9 +10,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        findPreference<EditTextPreference>("volume")?.let(::numberOnly)
-        findPreference<EditTextPreference>("water_price")?.let(::numberOnly)
-        findPreference<EditTextPreference>("empting_price")?.let(::numberOnly)
+        findPreference<EditTextPreference>(getString(R.string.preference_key_volume))?.let(::numberOnly)
+        findPreference<EditTextPreference>(getString(R.string.preference_key_water_price))?.let(::numberOnly)
+        findPreference<EditTextPreference>(getString(R.string.preference_key_empting_price))?.let(::numberOnly)
     }
 
     private fun numberOnly(preference: EditTextPreference) {

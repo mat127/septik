@@ -20,17 +20,29 @@ class Septik(
         emptyHistory.addObserver(this)
     }
 
-    val volume = 11.0 // TODO allow user setup in preferences
+    var volume = 11.0
+        set(value) {
+            field = value
+            this.changed()
+        }
 
-    val emptingPrice = 2475.0 // TODO allow user setup in preferences
+    var emptingPrice = 2475.0
+        set(value) {
+            field = value
+            this.changed()
+        }
 
-    val waterPrice = 1414.0/28.0 // TODO allow user setup in preferences
+    var waterPrice = 1414.0/28.0
+        set(value) {
+            field = value
+            this.changed()
+        }
 
     suspend fun getFillingSpeed() =
         stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL) ?: Double.NaN
 
     fun getCapacity(speed: Double): Duration? =
-        if(speed.isNaN()) null
+        if(speed.isNaN() or volume.isNaN()) null
         else Duration.ofSeconds(volume.div(speed).roundToLong())
 
     suspend fun estimateCurrentState(): Double {
@@ -43,10 +55,11 @@ class Septik(
     }
 
     fun percent(state: Double): Int  =
-        if(state.isNaN()) -1
+        if(state.isNaN() or volume.isNaN()) -1
         else state.div(volume).times(100).roundToInt()
 
     suspend fun estimateNextFullTimestamp(): Instant? {
+        if (volume.isNaN()) return null
         val start = emptyHistory.getLastEmptyTimestamp()
         if (start == null) return null
         val speed = stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL)

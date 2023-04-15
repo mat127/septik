@@ -28,6 +28,11 @@
     <string name="label_consumption_per_day">Denní spotřeba:</string>
     <string name="label_water_price">Cena za 1m³:</string>
 
+    <!-- Preference Keyss -->
+    <string name="preference_key_volume">volume</string>
+    <string name="preference_key_water_price">water_price</string>
+    <string name="preference_key_empting_price">empting_price</string>
+
     <!-- Preference Titles -->
     <string name="septik_header">Septik</string>
     <string name="costs_header">Náklady</string>
