@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.CurrentStateFragment">
+        tools:context=".ui.CurrentStateFragment" android:id="@+id/currentStateLayout">
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -113,4 +113,31 @@
                     android:layout_weight="1" android:gravity="center_vertical|end"/>
         </TableRow>
     </TableLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:src="@android:drawable/ic_input_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true" android:id="@+id/addButton"
+            app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+            android:layout_marginBottom="16dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp" android:rotation="0"/>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:text="@string/action_addState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false" android:id="@+id/addStateButton"
+            app:layout_constraintEnd_toEndOf="@+id/addButton"
+            android:visibility="invisible"
+            android:textAlignment="center" app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+            android:layout_marginBottom="16dp"/>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:text="@string/action_addEmptyDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false" android:id="@+id/addEmptingButton"
+            app:layout_constraintEnd_toEndOf="@+id/addButton"
+            android:visibility="invisible"
+            android:textAlignment="center" app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+            android:layout_marginBottom="16dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

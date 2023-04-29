@@ -61,12 +61,12 @@ class MainActivity : AppCompatActivity() {
         else -> super.onOptionsItemSelected(item)
     }
 
-    private fun addState() {
+    fun addState() {
         val dialog = AddStateDialog()
         dialog.show(supportFragmentManager, "add-state")
     }
 
-    private fun addEmptyTimestamp() {
+    fun addEmptyTimestamp() {
         val dialog = AddEmptyDialog()
         dialog.show(supportFragmentManager, "add-empty")
     }
