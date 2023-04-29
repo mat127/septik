@@ -1,10 +1,19 @@
 package com.github.mat127.septik.ui
 
 import android.os.Bundle
+import android.transition.ChangeBounds
+import android.transition.Fade
+import android.transition.TransitionManager
+import android.transition.TransitionSet
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.Button
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.activityViewModels
 import com.github.mat127.septik.R
 import com.github.mat127.septik.databinding.FragmentCurrentStateBinding
@@ -26,11 +35,27 @@ class CurrentStateFragment : Fragment() {
 
     private val model: SeptikViewModel by activityViewModels { SeptikViewModel.Factory }
 
+    private val activity get() = super.getActivity() as MainActivity
+
+    private lateinit var rotateForward: Animation
+    private lateinit var rotateBackward: Animation
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCurrentStateBinding.inflate(inflater, container, false)
+        rotateForward = AnimationUtils.loadAnimation(activity, R.anim.rotate_forward)
+        rotateBackward = AnimationUtils.loadAnimation(activity, R.anim.rotate_backward)
+        binding.addButton.setOnClickListener(this::openFab)
+        binding.addStateButton.setOnClickListener { view ->
+            closeFab(view)
+            activity.addState()
+        }
+        binding.addEmptingButton.setOnClickListener { view ->
+            closeFab(view)
+            activity.addEmptyTimestamp()
+        }
         return binding.root
     }
 
@@ -47,6 +72,46 @@ class CurrentStateFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun openFab(view: View) {
+        binding.addButton.startAnimation(rotateForward)
+        beginTransition(Fade.IN)
+        showButton(binding.addStateButton, binding.addButton.id)
+        showButton(binding.addEmptingButton, binding.addStateButton.id)
+        binding.addButton.setOnClickListener(this::closeFab)
+    }
+
+    private fun closeFab(view: View) {
+        binding.addButton.startAnimation(rotateBackward)
+        beginTransition(Fade.OUT)
+        hideButton(binding.addStateButton)
+        hideButton(binding.addEmptingButton)
+        binding.addButton.setOnClickListener(this::openFab)
+    }
+
+    private fun beginTransition(fadingMode: Int) {
+        val transition = TransitionSet()
+        transition.addTransition(Fade(fadingMode))
+        transition.addTransition(ChangeBounds())
+        transition.duration = 300
+        TransitionManager.beginDelayedTransition(binding.currentStateLayout, transition)
+    }
+
+    private fun showButton(button: Button, bottomId: Int) {
+        button.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            bottomToTop = bottomId
+        }
+        button.visibility = ConstraintLayout.VISIBLE
+        button.isClickable = true
+    }
+
+    private fun hideButton(button: Button) {
+        button.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            bottomToTop = binding.tableLayout.id
+        }
+        button.visibility = ConstraintLayout.INVISIBLE
+        button.isClickable = false
     }
 
     private fun updateEstimatedStatePercent(percent: Int) {
