@@ -2,6 +2,7 @@ package com.github.mat127.septik.ui
 
 import android.os.Bundle
 import android.transition.ChangeBounds
+import android.transition.ChangeTransform
 import android.transition.Fade
 import android.transition.TransitionManager
 import android.transition.TransitionSet
@@ -9,8 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
 import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
@@ -37,16 +37,11 @@ class CurrentStateFragment : Fragment() {
 
     private val activity get() = super.getActivity() as MainActivity
 
-    private lateinit var rotateForward: Animation
-    private lateinit var rotateBackward: Animation
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCurrentStateBinding.inflate(inflater, container, false)
-        rotateForward = AnimationUtils.loadAnimation(activity, R.anim.rotate_forward)
-        rotateBackward = AnimationUtils.loadAnimation(activity, R.anim.rotate_backward)
         binding.addButton.setOnClickListener(this::openFab)
         binding.addStateButton.setOnClickListener { view ->
             closeFab(view)
@@ -75,16 +70,16 @@ class CurrentStateFragment : Fragment() {
     }
 
     private fun openFab(view: View) {
-        binding.addButton.startAnimation(rotateForward)
         beginTransition(Fade.IN)
+        binding.addButton.rotation = 45f
         showButton(binding.addStateButton, binding.addButton.id)
         showButton(binding.addEmptingButton, binding.addStateButton.id)
         binding.addButton.setOnClickListener(this::closeFab)
     }
 
     private fun closeFab(view: View) {
-        binding.addButton.startAnimation(rotateBackward)
         beginTransition(Fade.OUT)
+        binding.addButton.rotation = 0f
         hideButton(binding.addStateButton)
         hideButton(binding.addEmptingButton)
         binding.addButton.setOnClickListener(this::openFab)
@@ -94,7 +89,9 @@ class CurrentStateFragment : Fragment() {
         val transition = TransitionSet()
         transition.addTransition(Fade(fadingMode))
         transition.addTransition(ChangeBounds())
+        transition.addTransition(ChangeTransform())
         transition.duration = 300
+        transition.interpolator = OvershootInterpolator()
         TransitionManager.beginDelayedTransition(binding.currentStateLayout, transition)
     }
 
@@ -102,6 +99,8 @@ class CurrentStateFragment : Fragment() {
         button.updateLayoutParams<ConstraintLayout.LayoutParams> {
             bottomToTop = bottomId
         }
+        button.scaleX = 1f
+        button.scaleY = 1f
         button.visibility = ConstraintLayout.VISIBLE
         button.isClickable = true
     }
@@ -110,6 +109,8 @@ class CurrentStateFragment : Fragment() {
         button.updateLayoutParams<ConstraintLayout.LayoutParams> {
             bottomToTop = binding.tableLayout.id
         }
+        button.scaleX = 0f
+        button.scaleY = 0f
         button.visibility = ConstraintLayout.INVISIBLE
         button.isClickable = false
     }
