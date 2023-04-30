@@ -2,8 +2,6 @@ package com.github.mat127.septik.ui
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -38,27 +36,6 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         this.setupPreferences(preferences)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_addEmptyDate -> {
-            addEmptyTimestamp()
-            true
-        }
-        R.id.action_addState -> {
-            addState()
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
     }
 
     fun addState() {
