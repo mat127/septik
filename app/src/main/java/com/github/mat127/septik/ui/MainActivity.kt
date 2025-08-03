@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val preferencesListener = SharedPreferences.OnSharedPreferenceChangeListener {
-            preferences: SharedPreferences, key: String ->
+            preferences: SharedPreferences, key: String? ->
         when (key) {
             getString(R.string.preference_key_volume) -> {
                 preferences.getString(key, "")?.toDoubleOrNull().let {
