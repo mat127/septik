@@ -11,7 +11,10 @@ import com.github.mat127.septik.db.dao.StateDao
 import com.github.mat127.septik.db.entity.EmptyTimestampEntity
 import com.github.mat127.septik.db.entity.StateEntity
 
-@Database(entities = [StateEntity::class, EmptyTimestampEntity::class], version=1)
+@Database(entities = [StateEntity::class, EmptyTimestampEntity::class],
+    version=1,
+    exportSchema = false
+)
 @TypeConverters(InstantConverter::class)
 abstract class SeptikDatabase: RoomDatabase() {
     abstract fun stateDao(): StateDao
