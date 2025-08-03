@@ -7,13 +7,23 @@
         <EditTextPreference
                 app:key="@string/preference_key_volume"
                 app:title="@string/volume_title"
-                app:useSimpleSummaryProvider="true" app:defaultValue="11"/>
+                app:useSimpleSummaryProvider="true" app:defaultValue="11" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <EditTextPreference
+                app:key="@string/preference_key_filling_estimation_interval"
+                app:title="@string/filling_estimation_interval_title"
+                app:useSimpleSummaryProvider="true" app:defaultValue="28"/>
 
     </PreferenceCategory>
 
     <PreferenceCategory
             app:title="@string/costs_header">
 
+        <EditTextPreference
+                app:key="@string/preference_key_costs_estimation_interval"
+                app:title="@string/costs_estimation_interval_title"
+                app:useSimpleSummaryProvider="true" app:defaultValue="365" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         <EditTextPreference
                 app:key="@string/preference_key_water_price"
                 app:title="@string/water_price_title"

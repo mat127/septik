@@ -12,6 +12,7 @@ import com.github.mat127.septik.R
 import com.github.mat127.septik.SeptikApplication
 import com.github.mat127.septik.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.time.Duration
 
 
 class MainActivity : AppCompatActivity() {
@@ -68,6 +69,22 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.preference_key_volume) -> {
                 preferences.getString(key, "")?.toDoubleOrNull().let {
                     septik?.volume = it ?: Double.NaN
+                }
+            }
+            getString(R.string.preference_key_filling_estimation_interval) -> {
+                preferences.getString(key, "")?.toLongOrNull().let {
+                    septik?.fillingSpeedEstimationInterval = if (it != null)
+                        Duration.ofDays(it)
+                    else
+                        Duration.ZERO
+                }
+            }
+            getString(R.string.preference_key_costs_estimation_interval) -> {
+                preferences.getString(key, "")?.toLongOrNull().let {
+                    septik?.costsEstimationInterval = if (it != null)
+                        Duration.ofDays(it)
+                    else
+                        Duration.ZERO
                 }
             }
             getString(R.string.preference_key_empting_price) -> {

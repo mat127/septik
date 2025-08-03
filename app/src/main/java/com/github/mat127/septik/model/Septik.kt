@@ -6,10 +6,6 @@ import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-private val SPEED_CALCULATION_INTERVAL = Duration.ofDays(30) // TODO allow user setup in preferences
-private val EMPTING_CALCULATION_INTERVAL = Duration.ofDays(365) // TODO allow user setup in preferences
-private val WATER_CONSUMPTION_CALCULATION_INTERVAL = Duration.ofDays(365) // TODO allow user setup in preferences
-
 class Septik(
     val stateHistory: StateHistory,
     val emptyHistory: EmptyHistory
@@ -21,6 +17,18 @@ class Septik(
     }
 
     var volume = 11.0
+        set(value) {
+            field = value
+            this.changed()
+        }
+
+    var fillingSpeedEstimationInterval = Duration.ofDays(4*7)
+        set(value) {
+            field = value
+            this.changed()
+        }
+
+    var costsEstimationInterval = Duration.ofDays(365)
         set(value) {
             field = value
             this.changed()
@@ -39,7 +47,7 @@ class Septik(
         }
 
     suspend fun getFillingSpeed() =
-        stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL) ?: Double.NaN
+        stateHistory.getSpeed(fillingSpeedEstimationInterval) ?: Double.NaN
 
     fun getCapacity(speed: Double): Duration? =
         if(speed.isNaN() or volume.isNaN()) null
@@ -48,7 +56,7 @@ class Septik(
     suspend fun estimateCurrentState(): Double {
         val start = emptyHistory.getLastEmptyTimestamp()
         if (start == null) return Double.NaN
-        val speed = stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL)
+        val speed = stateHistory.getSpeed(fillingSpeedEstimationInterval)
         if (speed == null) return Double.NaN
         val duration = Duration.between(start, Instant.now())
         return speed * duration.seconds
@@ -62,16 +70,16 @@ class Septik(
         if (volume.isNaN()) return null
         val start = emptyHistory.getLastEmptyTimestamp()
         if (start == null) return null
-        val speed = stateHistory.getSpeed(SPEED_CALCULATION_INTERVAL)
+        val speed = stateHistory.getSpeed(fillingSpeedEstimationInterval)
         if (speed == null || speed <= 0.0) return null
         return start.plus(volume.div(speed).roundToLong(), ChronoUnit.SECONDS)
     }
 
     suspend fun getEmptingCountPerYear() =
-        emptyHistory.getEmptingCountPerYear(EMPTING_CALCULATION_INTERVAL)
+        emptyHistory.getEmptingCountPerYear(costsEstimationInterval)
 
     suspend fun getWaterConsumption() =
-        stateHistory.getSpeed(WATER_CONSUMPTION_CALCULATION_INTERVAL).let {
+        stateHistory.getSpeed(costsEstimationInterval).let {
             if (it == null) Double.NaN
             else it * 60*60*24
         }
