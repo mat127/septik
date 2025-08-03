@@ -10,12 +10,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        findPreference<EditTextPreference>(getString(R.string.preference_key_volume))?.let(::numberOnly)
-        findPreference<EditTextPreference>(getString(R.string.preference_key_water_price))?.let(::numberOnly)
-        findPreference<EditTextPreference>(getString(R.string.preference_key_empting_price))?.let(::numberOnly)
+        findPreference<EditTextPreference>(getString(R.string.preference_key_volume))?.let(::decimalNumberOnly)
+        findPreference<EditTextPreference>(getString(R.string.preference_key_filling_estimation_interval))?.let(::numberOnly)
+        findPreference<EditTextPreference>(getString(R.string.preference_key_costs_estimation_interval))?.let(::numberOnly)
+        findPreference<EditTextPreference>(getString(R.string.preference_key_water_price))?.let(::decimalNumberOnly)
+        findPreference<EditTextPreference>(getString(R.string.preference_key_empting_price))?.let(::decimalNumberOnly)
     }
 
     private fun numberOnly(preference: EditTextPreference) {
+        preference.setOnBindEditTextListener {
+            it.inputType = InputType.TYPE_CLASS_NUMBER
+        }
+    }
+
+    private fun decimalNumberOnly(preference: EditTextPreference) {
         preference.setOnBindEditTextListener {
             it.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
         }

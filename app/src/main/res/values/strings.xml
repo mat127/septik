@@ -35,7 +35,7 @@
 
     <!-- Preference Titles -->
     <string name="septik_header">Septik</string>
-    <string name="costs_header">Náklady</string>
+    <string name="costs_header">Spotřeba a náklady</string>
 
     <!-- Septik Preferences -->
     <string name="volume_title">Kapacita</string>
@@ -44,5 +44,9 @@
     <!-- Costs Preferences -->
     <string name="water_price_title">Vodné</string>
     <string name="empting_price_title">Cena za vývoz</string>
+    <string name="preference_key_filling_estimation_interval">filling_estimation_interval</string>
+    <string name="filling_estimation_interval_title">Počet dní pro odhad naplnění</string>
+    <string name="preference_key_costs_estimation_interval">costs_estimation_interval</string>
+    <string name="costs_estimation_interval_title">Počet dní pro odhad spotřeby a nákladů</string>
 
 </resources>
